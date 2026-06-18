@@ -9,6 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ton/crypto": "^3.3.0",
+    "@ton/ton": "^16.3.0",
+    "@twa-dev/sdk": "^8.0.2",
+    "bip39": "^3.1.0",
+    "ethers": "^6.17.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"
