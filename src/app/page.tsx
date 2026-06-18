@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { validateMnemonic } from "bip39";
+import { QRCodeSVG } from "qrcode.react";
 import {
   type NikkaWalletState,
   generateNikkaWallet,
@@ -911,6 +912,7 @@ interface DashboardScreenProps {
   copiedAddress: string | null;
   onCopyAddress: (address: string) => void;
   onOpenSend: () => void;
+  onOpenReceive: () => void;
 }
 
 function DashboardScreen({
@@ -921,8 +923,8 @@ function DashboardScreen({
   copiedAddress,
   onCopyAddress,
   onOpenSend,
+  onOpenReceive,
 }: DashboardScreenProps) {
-  const [showAssetPicker, setShowAssetPicker] = useState(false);
   const formatBalance = (v: number | null) =>
     v !== null ? v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
 
@@ -1046,6 +1048,7 @@ function DashboardScreen({
         </button>
 
         <button
+          onClick={onOpenReceive}
           className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
           style={{
             backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
@@ -1140,9 +1143,13 @@ export default function Home() {
   const [balanceError, setBalanceError] = useState<string | null>(null);
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
 
+  /* ── Receive modal state ── */
+  const [receiveAsset, setReceiveAsset] = useState<"NONE" | "TON" | "TRX" | "USDT">("NONE");
+  const [receiveCopied, setReceiveCopied] = useState<string | null>(null);
+
   /* ── Send modal state ── */
   const [activeModal, setActiveModal] = useState<"NONE" | "SEND_TON" | "SEND_TRX" | "SEND_USDT">("NONE");
-  const [sendStep, setSendStep] = useState<"PICK" | "FORM" | "SENDING" | "SUCCESS" | "ERROR">("PICK");
+  const [sendStep, setSendStep] = useState<"NONE" | "PICK" | "FORM" | "SENDING" | "SUCCESS" | "ERROR">("NONE");
   const [sendError, setSendError] = useState("");
   const [sendTxId, setSendTxId] = useState("");
   const webAppRef = useRef<Awaited<typeof import("@twa-dev/sdk").default> | null>(null);
@@ -1217,11 +1224,10 @@ export default function Home() {
 
   const handlePinConfirmed = async (pin: string) => {
     if (!wallet) return;
-    // Encrypt and persist the mnemonic
     try {
       const encrypted = await encryptMnemonic(wallet.mnemonic, pin);
       const webApp = webAppRef.current;
-      if (webApp?.CloudStorage?.setItem) {
+      if (webApp?.isVersionAtLeast?.("6.9") && webApp?.CloudStorage?.setItem) {
         webApp.CloudStorage.setItem("nikka_encrypted", encrypted, (err: string | null) => {
           if (err) localStorage.setItem("nikka_encrypted", encrypted);
         });
@@ -1232,6 +1238,32 @@ export default function Home() {
       localStorage.setItem("nikka_encrypted", await encryptMnemonic(wallet.mnemonic, pin));
     }
     setScreen("DASHBOARD");
+  };
+
+  /* ── Receive flow handlers ── */
+
+  const handleOpenReceive = () => {
+    setReceiveAsset("TON"); // default to TON picker
+    setReceiveCopied(null);
+  };
+
+  const handlePickReceiveAsset = (asset: "TON" | "TRX" | "USDT") => {
+    setReceiveAsset(asset);
+    setReceiveCopied(null);
+  };
+
+  const handleCopyReceiveAddress = async (addr: string) => {
+    try {
+      await navigator.clipboard.writeText(addr);
+      setReceiveCopied(addr);
+      try { webAppRef.current?.HapticFeedback?.notificationOccurred?.("success"); } catch { /* no-op */ }
+      setTimeout(() => setReceiveCopied(null), 2000);
+    } catch { /* clipboard unavailable */ }
+  };
+
+  const handleCloseReceive = () => {
+    setReceiveAsset("NONE");
+    setReceiveCopied(null);
   };
 
   /* ── Send flow handlers ── */
@@ -1251,7 +1283,7 @@ export default function Home() {
 
   const handleSendCancel = () => {
     setActiveModal("NONE");
-    setSendStep("PICK");
+    setSendStep("NONE");
     setSendError("");
     setSendTxId("");
   };
@@ -1265,7 +1297,7 @@ export default function Home() {
       // Retrieve encrypted mnemonic
       const encrypted = await new Promise<string>((resolve, reject) => {
         const webApp = webAppRef.current;
-        if (webApp?.CloudStorage?.getItem) {
+        if (webApp?.isVersionAtLeast?.("6.9") && webApp?.CloudStorage?.getItem) {
           webApp.CloudStorage.getItem("nikka_encrypted", (err: string | null, val?: string) => {
             if (err || !val) { reject(new Error("Could not retrieve wallet from secure storage")); return; }
             else resolve(val);
@@ -1319,7 +1351,7 @@ export default function Home() {
       ]).catch(() => {});
     }
     setActiveModal("NONE");
-    setSendStep("PICK");
+    setSendStep("NONE");
     setSendError("");
     setSendTxId("");
   };
@@ -1383,6 +1415,154 @@ export default function Home() {
     return null;
   };
 
+  /* ── Receive modal renderer ── */
+
+  const renderReceiveModal = () => {
+    if (receiveAsset === "NONE" || !wallet) return null;
+
+    const address =
+      receiveAsset === "TON" ? wallet.tonAddress
+      : receiveAsset === "TRX" ? wallet.tronAddress
+      : wallet.tronAddress;
+
+    const networkLabel =
+      receiveAsset === "TON" ? "TON Network"
+      : receiveAsset === "TRX" ? "TRON Network"
+      : "TRON Network (TRC-20)";
+
+    const shortLabel =
+      receiveAsset === "TON" ? "TON"
+      : receiveAsset === "TRX" ? "TRX"
+      : "USDT";
+
+    const isUsdt = receiveAsset === "USDT";
+
+    const canGoBack = receiveAsset !== "TON" && receiveAsset !== "TRX" && receiveAsset !== "USDT";
+    // We use an internal step instead for asset picking — default shows QR directly.
+    // If we need a picker, show it when receiveAsset is a special "PICK" value.
+    // Instead, let's use a clean two-flow: open to TON, then user can switch via a button.
+
+    return (
+      <SendModalOverlay>
+        <div className="flex flex-col h-full px-4 pt-3 pb-6">
+          {/* Header */}
+          <div className="text-center pb-3">
+            <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+              Receive {shortLabel}
+            </h1>
+            <p className="text-sm mt-0.5" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+              {networkLabel}
+            </p>
+          </div>
+
+          {/* Cross-chain warning */}
+          <div
+            className="rounded-xl px-4 py-2.5 mb-5 flex items-center gap-2 text-xs font-medium"
+            style={{
+              backgroundColor: isUsdt || receiveAsset === "TRX"
+                ? "var(--tg-theme-secondary-bg-color, #f4f4f5)"
+                : "var(--tg-theme-secondary-bg-color, #f4f4f5)",
+            }}
+          >
+            <span
+              className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+              style={{
+                backgroundColor: "var(--tgme-destructive-text-color, #e53935)",
+                color: "#fff",
+              }}
+            >
+              !
+            </span>
+            <span style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+              {isUsdt
+                ? "Send only USDT on TRON network (TRC-20). Sending other networks will result in permanent loss."
+                : receiveAsset === "TRX"
+                  ? "Send only TRX on TRON network. Sending other networks will result in permanent loss."
+                  : "Send only TON on TON network. Sending other networks will result in permanent loss."}
+            </span>
+          </div>
+
+          {/* QR code */}
+          <div className="flex-1 flex flex-col items-center justify-center gap-4">
+            <div
+              className="rounded-2xl p-4"
+              style={{ backgroundColor: "var(--tg-theme-section-bg-color, #fff)" }}
+            >
+              <QRCodeSVG
+                value={address}
+                size={180}
+                bgColor="transparent"
+                fgColor={(() => {
+                  // approximate dark text colour from theme
+                  return "#000";
+                })()}
+                level="M"
+              />
+            </div>
+
+            {/* Full address */}
+            <div
+              className="w-full rounded-xl px-4 py-3 text-center"
+              style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+            >
+              <p
+                className="text-xs font-mono leading-relaxed break-all select-all"
+                style={{ color: "var(--tg-theme-text-color, #000)" }}
+              >
+                {address}
+              </p>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="flex flex-col gap-3 mt-auto pt-4">
+            <button
+              onClick={() => handleCopyReceiveAddress(address)}
+              className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] flex items-center justify-center gap-2"
+              style={{
+                backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+                color: "var(--tg-theme-button-text-color, #fff)",
+              }}
+            >
+              {receiveCopied === address ? "Copied!" : "Copy Address"}
+            </button>
+
+            {/* Switch asset row */}
+            <div className="flex gap-2">
+              {(["TON", "TRX", "USDT"] as const).map((a) => (
+                <button
+                  key={a}
+                  onClick={() => handlePickReceiveAsset(a)}
+                  className="flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all active:scale-[0.97]"
+                  style={{
+                    backgroundColor:
+                      receiveAsset === a
+                        ? "var(--tg-theme-button-color, #2481cc)"
+                        : "var(--tg-theme-secondary-bg-color, #f4f4f5)",
+                    color:
+                      receiveAsset === a
+                        ? "var(--tg-theme-button-text-color, #fff)"
+                        : "var(--tg-theme-text-color, #000)",
+                  }}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={handleCloseReceive}
+              className="w-full py-3 rounded-xl font-semibold text-sm"
+              style={{ color: "var(--tg-theme-hint-color, #999)" }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </SendModalOverlay>
+    );
+  };
+
   switch (screen) {
     case "WELCOME":
       return (
@@ -1422,8 +1602,10 @@ export default function Home() {
             copiedAddress={copiedAddress}
             onCopyAddress={handleCopyAddress}
             onOpenSend={handleOpenSend}
+            onOpenReceive={handleOpenReceive}
           />
           {renderSendModal()}
+          {renderReceiveModal()}
         </>
       );
   }
