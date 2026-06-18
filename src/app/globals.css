@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-tg-bg: var(--tg-theme-bg-color, #ffffff);
-  --color-tg-text: var(--tg-theme-text-color, #000000);
-  --color-tg-hint: var(--tg-theme-hint-color, #999999);
-  --color-tg-link: var(--tg-theme-link-color, #2481cc);
-  --color-tg-button: var(--tg-theme-button-color, #2481cc);
-  --color-tg-button-text: var(--tg-theme-button-text-color, #ffffff);
-  --color-tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f4f4f5);
-  --color-tg-header-bg: var(--tg-theme-header-bg-color, #efeff0);
-  --color-tg-accent: var(--tg-theme-accent-text-color, #2481cc);
-  --color-tg-section-bg: var(--tg-theme-section-bg-color, #ffffff);
+  --color-tg-bg: var(--tg-theme-bg-color, #141416);
+  --color-tg-text: var(--tg-theme-text-color, #ffffff);
+  --color-tg-hint: var(--tg-theme-hint-color, #A0A0AA);
+  --color-tg-link: var(--tg-theme-link-color, #DCA842);
+  --color-tg-button: var(--tg-theme-button-color, #DCA842);
+  --color-tg-button-text: var(--tg-theme-button-text-color, #141416);
+  --color-tg-secondary-bg: var(--tg-theme-secondary-bg-color, #1E1E22);
+  --color-tg-header-bg: var(--tg-theme-header-bg-color, #1E1E22);
+  --color-tg-accent: var(--tg-theme-accent-text-color, #DCA842);
+  --color-tg-section-bg: var(--tg-theme-section-bg-color, #1E1E22);
   --color-tg-destructive: var(--tg-theme-destructive-text-color, #e53935);
-  --color-tg-subtitle: var(--tg-theme-subtitle-text-color, #666666);
+  --color-tg-subtitle: var(--tg-theme-subtitle-text-color, #A0A0AA);
+  --color-amber-gold: #DCA842;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

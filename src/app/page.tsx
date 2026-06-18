@@ -75,7 +75,7 @@ function ActivityIcon({ type }: { type: CryptoActivity["type"] }) {
 function ScreenFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-dvh px-4 pt-3 pb-6"
-      style={{ backgroundColor: "#121214", color: "var(--tg-theme-text-color, #fff)" }}>
+      style={{ backgroundColor: "#141416", color: "var(--tg-theme-text-color, #fff)" }}>
       {children}
     </div>
   );
@@ -97,7 +97,7 @@ function WelcomeScreen({
         <div
           className="w-16 h-16 rounded-2xl flex items-center justify-center mb-2"
           style={{
-            backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+            backgroundColor: "var(--tg-theme-button-color, #DCA842)",
           }}
         >
           <svg
@@ -118,13 +118,13 @@ function WelcomeScreen({
         <div>
           <h1
             className="text-2xl font-bold mb-1"
-            style={{ color: "var(--tg-theme-text-color, #000)" }}
+            style={{ color: "var(--tg-theme-text-color, #fff)" }}
           >
             Nikka Wallet
           </h1>
           <p
             className="text-sm"
-            style={{ color: "var(--tg-theme-hint-color, #999)" }}
+            style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
           >
             Your self-custodial crypto wallet
           </p>
@@ -136,7 +136,7 @@ function WelcomeScreen({
             onClick={onNewWallet}
             className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
             style={{
-              backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+              backgroundColor: "var(--tg-theme-button-color, #DCA842)",
               color: "var(--tg-theme-button-text-color, #fff)",
             }}
           >
@@ -148,7 +148,7 @@ function WelcomeScreen({
             className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
             style={{
               backgroundColor: "rgba(255,255,255,0.06)",
-              color: "var(--tg-theme-button-color, #2481cc)",
+              color: "var(--tg-theme-button-color, #DCA842)",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
@@ -190,13 +190,13 @@ function ShowSeedScreen({
         <div className="text-center mb-5">
           <h1
             className="text-lg font-bold mb-1"
-            style={{ color: "var(--tg-theme-text-color, #000)" }}
+            style={{ color: "var(--tg-theme-text-color, #fff)" }}
           >
             Your Recovery Phrase
           </h1>
           <p
             className="text-sm"
-            style={{ color: "var(--tg-theme-hint-color, #999)" }}
+            style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
           >
             Write these 24 words down in order. Never share them with anyone.
           </p>
@@ -214,7 +214,7 @@ function ShowSeedScreen({
             >
               <span
                 className="text-[10px] font-semibold w-3.5 shrink-0 text-center"
-                style={{ color: "var(--tg-theme-hint-color, #999)" }}
+                style={{ color: "#DCA842" }}
               >
                 {i + 1}
               </span>
@@ -252,7 +252,7 @@ function ShowSeedScreen({
             className="w-full py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
             style={{
               backgroundColor: "rgba(255,255,255,0.06)",
-              color: copied ? "var(--tg-theme-accent-text-color, #2481cc)" : "rgba(255,255,255,0.7)",
+              color: copied ? "var(--tg-theme-accent-text-color, #DCA842)" : "rgba(255,255,255,0.7)",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
@@ -263,7 +263,7 @@ function ShowSeedScreen({
             onClick={onConfirm}
             className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
             style={{
-              backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+              backgroundColor: "var(--tg-theme-button-color, #DCA842)",
               color: "var(--tg-theme-button-text-color, #fff)",
             }}
           >
@@ -296,13 +296,13 @@ function ImportSeedScreen({
         <div className="text-center mb-5">
           <h1
             className="text-lg font-bold mb-1"
-            style={{ color: "var(--tg-theme-text-color, #000)" }}
+            style={{ color: "var(--tg-theme-text-color, #fff)" }}
           >
             Import Wallet
           </h1>
           <p
             className="text-sm"
-            style={{ color: "var(--tg-theme-hint-color, #999)" }}
+            style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
           >
             Paste or type your 24-word recovery phrase
           </p>
@@ -319,7 +319,7 @@ function ImportSeedScreen({
             backgroundColor: "rgba(255,255,255,0.05)",
             color: "var(--tg-theme-text-color, #fff)",
             boxShadow: isValid
-              ? "inset 0 0 0 2px var(--tg-theme-accent-text-color, #2481cc)"
+              ? "inset 0 0 0 2px var(--tg-theme-accent-text-color, #DCA842)"
               : showWarning
                 ? "inset 0 0 0 2px var(--tg-theme-destructive-text-color, #e53935)"
                 : "none",
@@ -336,7 +336,7 @@ function ImportSeedScreen({
                 viewBox="0 0 20 20"
                 fill="currentColor"
                 className="w-4 h-4"
-                style={{ color: "var(--tg-theme-accent-text-color, #2481cc)" }}
+                style={{ color: "var(--tg-theme-accent-text-color, #DCA842)" }}
               >
                 <path
                   fillRule="evenodd"
@@ -346,7 +346,7 @@ function ImportSeedScreen({
               </svg>
               <span
                 className="text-xs font-medium"
-                style={{ color: "var(--tg-theme-accent-text-color, #2481cc)" }}
+                style={{ color: "var(--tg-theme-accent-text-color, #DCA842)" }}
               >
                 Valid phrase
               </span>
@@ -369,7 +369,7 @@ function ImportSeedScreen({
             onClick={() => onImport(trimmed)}
             className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-40 disabled:active:scale-100"
             style={{
-              backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+              backgroundColor: "var(--tg-theme-button-color, #DCA842)",
               color: "var(--tg-theme-button-text-color, #fff)",
             }}
           >
@@ -381,7 +381,7 @@ function ImportSeedScreen({
             className="w-full py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
             style={{
               backgroundColor: "rgba(255,255,255,0.06)",
-              color: "var(--tg-theme-hint-color, #999)",
+              color: "var(--tg-theme-hint-color, #A0A0AA)",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
@@ -410,13 +410,13 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
         <div className="text-center mb-8">
           <h1
             className="text-lg font-bold mb-1"
-            style={{ color: "var(--tg-theme-text-color, #000)" }}
+            style={{ color: "var(--tg-theme-text-color, #fff)" }}
           >
             Set Your PIN
           </h1>
           <p
             className="text-sm"
-            style={{ color: "var(--tg-theme-hint-color, #999)" }}
+            style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
           >
             Choose a 4-digit code to secure your wallet
           </p>
@@ -427,7 +427,7 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
           <div>
             <label
               className="text-xs font-medium mb-1.5 block"
-              style={{ color: "var(--tg-theme-hint-color, #999)" }}
+              style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
             >
               Enter PIN
             </label>
@@ -451,7 +451,7 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
           <div>
             <label
               className="text-xs font-medium mb-1.5 block"
-              style={{ color: "var(--tg-theme-hint-color, #999)" }}
+              style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
             >
               Confirm PIN
             </label>
@@ -491,7 +491,7 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
           onClick={() => onConfirm(pin)}
           className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-40 disabled:active:scale-100 mt-auto"
           style={{
-            backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+            backgroundColor: "var(--tg-theme-button-color, #DCA842)",
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
@@ -534,8 +534,8 @@ function IdleLockScreen({
     <div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center px-8"
       style={{
-        backgroundColor: "var(--tg-theme-bg-color, #fff)",
-        color: "var(--tg-theme-text-color, #000)",
+        backgroundColor: "var(--tg-theme-bg-color, #141416)",
+        color: "var(--tg-theme-text-color, #fff)",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
       }}
@@ -543,7 +543,7 @@ function IdleLockScreen({
       {/* Logo placeholder */}
       <div
         className="w-16 h-16 rounded-full flex items-center justify-center mb-8"
-        style={{ backgroundColor: "var(--tg-theme-button-color, #2481cc)" }}
+        style={{ backgroundColor: "var(--tg-theme-button-color, #DCA842)" }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-white">
           <path d="M11.584 2.376a.75.75 0 0 1 .832 0l9 6a.75.75 0 1 1-.832 1.248L12 4.013 3.416 9.624a.75.75 0 0 1-.832-1.248l9-6Z" />
@@ -559,8 +559,8 @@ function IdleLockScreen({
             className="w-3 h-3 rounded-full transition-all duration-150"
             style={{
               backgroundColor: i < digits.length
-                ? "var(--tg-theme-button-color, #2481cc)"
-                : "var(--tg-theme-hint-color, #999)",
+                ? "var(--tg-theme-button-color, #DCA842)"
+                : "var(--tg-theme-hint-color, #A0A0AA)",
               opacity: i < digits.length ? 1 : 0.3,
             }}
           />
@@ -575,8 +575,9 @@ function IdleLockScreen({
             onClick={() => handleDigit(String(n))}
             className="aspect-square rounded-full text-xl font-semibold transition-all active:scale-90"
             style={{
-              backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
-              color: "var(--tg-theme-text-color, #000)",
+              backgroundColor: "rgba(255,255,255,0.05)",
+              color: "var(--tg-theme-text-color, #fff)",
+              border: "1px solid rgba(255,255,255,0.06)",
             }}
           >
             {n}
@@ -589,8 +590,8 @@ function IdleLockScreen({
           onClick={() => handleDigit("0")}
           className="aspect-square rounded-full text-xl font-semibold transition-all active:scale-90"
           style={{
-            backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
-            color: "var(--tg-theme-text-color, #000)",
+            backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)",
+            color: "var(--tg-theme-text-color, #fff)",
           }}
         >
           0
@@ -598,7 +599,7 @@ function IdleLockScreen({
         <button
           onClick={handleDelete}
           className="aspect-square rounded-full flex items-center justify-center transition-all active:scale-90"
-          style={{ color: "var(--tg-theme-hint-color, #999)" }}
+          style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
             <path fillRule="evenodd" d="M7.22 3.22A.75.75 0 0 1 7.75 3h9A2.25 2.25 0 0 1 19 5.25v9.5A2.25 2.25 0 0 1 16.75 17h-9a.75.75 0 0 1-.53-.22L2.72 12.28a2.25 2.25 0 0 1 0-3.06l4.5-4.5Zm3.06 4.06a.75.75 0 1 0-1.06 1.06L10.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L12 8.94l-1.72-1.72Z" clipRule="evenodd" />
@@ -652,7 +653,7 @@ function SendModalOverlay({ children }: { children: React.ReactNode }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col"
       style={{
-        backgroundColor: "var(--tg-theme-bg-color, #fff)",
+        backgroundColor: "var(--tg-theme-bg-color, #141416)",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
       }}
@@ -678,10 +679,10 @@ function AssetPickerScreen({
   return (
     <div className="flex flex-col h-full px-4 pt-3 pb-6">
       <div className="text-center pb-4">
-        <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+        <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
           Send
         </h1>
-        <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+        <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
           Select an asset
         </p>
       </div>
@@ -692,15 +693,16 @@ function AssetPickerScreen({
             onClick={() => onPick(a.id)}
             className="flex items-center justify-between w-full rounded-xl px-4 py-4 transition-all active:scale-[0.98]"
             style={{
-              backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
-              color: "var(--tg-theme-text-color, #000)",
+              backgroundColor: "rgba(255,255,255,0.05)",
+              color: "var(--tg-theme-text-color, #fff)",
+              border: "1px solid rgba(255,255,255,0.06)",
             }}
           >
             <div className="flex items-center gap-3">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"
                 style={{
-                  backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+                  backgroundColor: "var(--tg-theme-button-color, #DCA842)",
                   color: "var(--tg-theme-button-text-color, #fff)",
                 }}
               >
@@ -708,7 +710,7 @@ function AssetPickerScreen({
               </div>
               <div className="text-left">
                 <p className="font-semibold text-sm">{a.label}</p>
-                <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #999)" }}>{a.sub}</p>
+                <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>{a.sub}</p>
               </div>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 opacity-40">
@@ -720,7 +722,7 @@ function AssetPickerScreen({
       <button
         onClick={onCancel}
         className="w-full py-3.5 rounded-xl font-semibold text-sm"
-        style={{ color: "var(--tg-theme-hint-color, #999)" }}
+        style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
       >
         Cancel
       </button>
@@ -779,7 +781,7 @@ function SendFormScreen({
     <div className="flex flex-col h-full px-4 pt-3 pb-6">
       {/* Header */}
       <div className="text-center pb-4">
-        <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+        <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
           Send {assetLabel}
         </h1>
       </div>
@@ -787,12 +789,12 @@ function SendFormScreen({
       <div className="flex-1 flex flex-col gap-4">
         {/* Recipient */}
         <div>
-          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
             Recipient Address
           </label>
           <div
             className="rounded-xl px-4 py-3 flex items-center gap-2"
-            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
           >
             <input
               value={recipient}
@@ -800,7 +802,7 @@ function SendFormScreen({
               placeholder={isTron ? "TXYZ..." : "EQD..."}
               className="flex-1 bg-transparent text-sm font-mono outline-none min-w-0"
               style={{
-                color: "var(--tg-theme-text-color, #000)",
+                color: "var(--tg-theme-text-color, #fff)",
               }}
               spellCheck={false}
             />
@@ -812,7 +814,7 @@ function SendFormScreen({
                 } catch {}
               }}
               className="shrink-0 p-1.5 rounded-lg transition-all active:scale-90"
-              style={{ color: "var(--tg-theme-button-color, #2481cc)" }}
+              style={{ color: "var(--tg-theme-button-color, #DCA842)" }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                 <path d="M7 3.5A1.5 1.5 0 0 1 8.5 2h3.879a1.5 1.5 0 0 1 1.06.44l3.122 3.12A1.5 1.5 0 0 1 17 6.622V12.5a1.5 1.5 0 0 1-1.5 1.5h-1v-3.379a3 3 0 0 0-.879-2.121L10.5 5.379A3 3 0 0 0 8.379 4.5H7v-1Z" />
@@ -829,12 +831,12 @@ function SendFormScreen({
 
         {/* Amount */}
         <div>
-          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
             Amount
           </label>
           <div
             className="rounded-xl px-4 py-3"
-            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
           >
             <div className="flex items-center gap-2">
               <input
@@ -846,14 +848,14 @@ function SendFormScreen({
                 min={0}
                 step="any"
                 className="flex-1 bg-transparent text-lg font-semibold tabular-nums outline-none min-w-0"
-                style={{ color: "var(--tg-theme-text-color, #000)" }}
+                style={{ color: "var(--tg-theme-text-color, #fff)" }}
               />
               <button
                 onClick={() => setAmount(maxAmount.toFixed(6))}
                 className="text-[11px] font-bold px-2.5 py-1 rounded-lg transition-all active:scale-90"
                 style={{
-                  color: "var(--tg-theme-button-color, #2481cc)",
-                  backgroundColor: "var(--tg-theme-bg-color, #fff)",
+                  color: "var(--tg-theme-button-color, #DCA842)",
+                  backgroundColor: "var(--tg-theme-bg-color, #141416)",
                 }}
               >
                 MAX
@@ -862,20 +864,20 @@ function SendFormScreen({
                 className="text-xs font-semibold px-2.5 py-1 rounded-lg"
                 style={{
                   color: "var(--tg-theme-button-text-color, #fff)",
-                  backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+                  backgroundColor: "var(--tg-theme-button-color, #DCA842)",
                 }}
               >
                 {assetLabel}
               </span>
             </div>
             {fiatValue > 0 && (
-              <p className="text-xs mt-1.5" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+              <p className="text-xs mt-1.5" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
                 ≈ ${fiatValue.toFixed(2)}
               </p>
             )}
           </div>
           <div className="flex justify-between mt-1">
-            <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+            <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
               Balance: {currentBalance.toFixed(2)} {assetLabel}
             </p>
             {parsedAmount > 0 && !amountOk && (
@@ -888,12 +890,12 @@ function SendFormScreen({
 
         {/* PIN */}
         <div>
-          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+          <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
             Enter 4-Digit PIN
           </label>
           <div
             className="rounded-xl px-4 py-3"
-            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
           >
             <input
               type="password"
@@ -902,7 +904,7 @@ function SendFormScreen({
               value={pin}
               onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
               className="w-full bg-transparent text-center text-xl tracking-[0.5em] outline-none"
-              style={{ color: "var(--tg-theme-text-color, #000)" }}
+              style={{ color: "var(--tg-theme-text-color, #fff)" }}
             />
           </div>
         </div>
@@ -915,8 +917,8 @@ function SendFormScreen({
           className="flex-1 py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
           style={{
             backgroundColor: "transparent",
-            color: "var(--tg-theme-hint-color, #999)",
-            border: "1px solid var(--tg-theme-secondary-bg-color, #f4f4f5)",
+            color: "var(--tg-theme-hint-color, #A0A0AA)",
+            border: "1px solid var(--tg-theme-secondary-bg-color, #1E1E22)",
           }}
         >
           Clear
@@ -926,7 +928,7 @@ function SendFormScreen({
           onClick={handleAction}
           className="flex-1 py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-40 disabled:active:scale-100"
           style={{
-            backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+            backgroundColor: "var(--tg-theme-button-color, #DCA842)",
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
@@ -942,14 +944,14 @@ function SendingScreen() {
     <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
       <div className="w-10 h-10 rounded-full border-3 border-t-transparent animate-spin"
         style={{
-          borderColor: "var(--tg-theme-button-color, #2481cc)",
+          borderColor: "var(--tg-theme-button-color, #DCA842)",
           borderTopColor: "transparent",
         }}
       />
-      <p className="text-sm font-medium" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+      <p className="text-sm font-medium" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
         Signing & broadcasting...
       </p>
-      <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+      <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
         Please wait while the transaction is processed
       </p>
     </div>
@@ -960,17 +962,17 @@ function SuccessScreen({ txid, onDone }: { txid: string; onDone: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
       <div className="w-14 h-14 rounded-full flex items-center justify-center"
-        style={{ backgroundColor: "var(--tg-theme-accent-text-color, #2481cc)" }}
+        style={{ backgroundColor: "var(--tg-theme-accent-text-color, #DCA842)" }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-white">
           <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clipRule="evenodd" />
         </svg>
       </div>
       <div className="text-center">
-        <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+        <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
           Sent!
         </p>
-        <p className="text-xs mt-1 font-mono break-all" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+        <p className="text-xs mt-1 font-mono break-all" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
           {txid}
         </p>
       </div>
@@ -978,7 +980,7 @@ function SuccessScreen({ txid, onDone }: { txid: string; onDone: () => void }) {
         onClick={onDone}
         className="w-full max-w-xs py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] mt-6"
         style={{
-          backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+          backgroundColor: "var(--tg-theme-button-color, #DCA842)",
           color: "var(--tg-theme-button-text-color, #fff)",
         }}
       >
@@ -1007,7 +1009,7 @@ function ErrorScreen({
         </svg>
       </div>
       <div className="text-center">
-        <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+        <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
           Failed
         </p>
         <p className="text-xs mt-1" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
@@ -1019,7 +1021,7 @@ function ErrorScreen({
           onClick={onRetry}
           className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
           style={{
-            backgroundColor: "var(--tg-theme-button-color, #2481cc)",
+            backgroundColor: "var(--tg-theme-button-color, #DCA842)",
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
@@ -1028,7 +1030,7 @@ function ErrorScreen({
         <button
           onClick={onCancel}
           className="w-full py-3 rounded-xl font-semibold text-sm"
-          style={{ color: "var(--tg-theme-hint-color, #999)" }}
+          style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
         >
           Cancel
         </button>
@@ -1050,7 +1052,7 @@ function BottomTabBar({
     <nav
       className="flex items-center justify-around px-8 py-2.5"
       style={{
-        backgroundColor: "var(--tg-theme-bg-color, #121214)",
+        backgroundColor: "var(--tg-theme-bg-color, #141416)",
         borderTop: "1px solid rgba(255,255,255,0.06)",
       }}
     >
@@ -1084,8 +1086,8 @@ function BottomTabBar({
           <span
             style={{
               color: activeTab === tab.key
-                ? "var(--tg-theme-button-color, #2481cc)"
-                : "var(--tg-theme-hint-color, #999)",
+                ? "var(--tg-theme-button-color, #DCA842)"
+                : "var(--tg-theme-hint-color, #A0A0AA)",
             }}
           >
             {tab.icon}
@@ -1094,8 +1096,8 @@ function BottomTabBar({
             className="text-[10px] font-semibold"
             style={{
               color: activeTab === tab.key
-                ? "var(--tg-theme-button-color, #2481cc)"
-                : "var(--tg-theme-hint-color, #999)",
+                ? "var(--tg-theme-button-color, #DCA842)"
+                : "var(--tg-theme-hint-color, #A0A0AA)",
             }}
           >
             {tab.label}
@@ -1112,18 +1114,18 @@ function SettingsScreen({ wallet }: { wallet: NikkaWalletState | null }) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 mb-4"
-        style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+        style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
         <path fillRule="evenodd" d="M14.694 2.765a2.25 2.25 0 0 0-3.388 0l-.744.844a2.25 2.25 0 0 1-2.12.718l-1.099-.22a2.25 2.25 0 0 0-2.687 1.582l-.289 1.078a2.25 2.25 0 0 1-1.04 1.38l-.97.592a2.25 2.25 0 0 0-.472 3.347l.662.72a2.25 2.25 0 0 1 0 3.06l-.662.72a2.25 2.25 0 0 0 .472 3.347l.97.592a2.25 2.25 0 0 1 1.04 1.38l.289 1.078a2.25 2.25 0 0 0 2.687 1.582l1.099-.22a2.25 2.25 0 0 1 2.12.718l.744.844a2.25 2.25 0 0 0 3.388 0l.744-.844a2.25 2.25 0 0 1 2.12-.718l1.099.22a2.25 2.25 0 0 0 2.687-1.582l.289-1.078a2.25 2.25 0 0 1 1.04-1.38l.97-.592a2.25 2.25 0 0 0 .472-3.347l-.662-.72a2.25 2.25 0 0 1 0-3.06l.662-.72a2.25 2.25 0 0 0-.472-3.347l-.97-.592a2.25 2.25 0 0 1-1.04-1.38l-.289-1.078a2.25 2.25 0 0 0-2.687-1.582l-1.099.22a2.25 2.25 0 0 1-2.12-.718l-.744-.844ZM12 9.75a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" clipRule="evenodd" />
       </svg>
-      <p className="text-sm font-medium" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+      <p className="text-sm font-medium" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
         Settings
       </p>
-      <p className="text-xs mt-1" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+      <p className="text-xs mt-1" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
         Security & developer options coming soon
       </p>
       {wallet && (
-        <p className="text-xs mt-4 font-mono opacity-50" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+        <p className="text-xs mt-4 font-mono opacity-50" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
           {wallet.tonAddress.slice(0, 6)}...{wallet.tonAddress.slice(-4)}
         </p>
       )}
@@ -1195,11 +1197,11 @@ function DashboardScreen({
       {/* ── Top Bar ── */}
       <header className="flex items-center justify-between pb-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+          <span className="text-sm font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
             Nikka Wallet
           </span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5"
-            style={{ color: "var(--tg-theme-accent-text-color, #2481cc)" }}>
+            style={{ color: "var(--tg-theme-accent-text-color, #DCA842)" }}>
             <path fillRule="evenodd" d="M8 1a4 4 0 0 1 4 4v2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2V5a4 4 0 0 1 4-4ZM4 7h8V5a3 3 0 1 0-6 0v2Z" clipRule="evenodd" />
           </svg>
         </div>
@@ -1208,8 +1210,8 @@ function DashboardScreen({
             onClick={() => onCopyAddress(wallet.tonAddress)}
             className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-mono transition-all active:scale-95"
             style={{
-              backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
-              color: "var(--tg-theme-hint-color, #999)",
+              backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)",
+              color: "var(--tg-theme-hint-color, #A0A0AA)",
             }}
           >
             <span>{shortenAddress(wallet.tonAddress)}</span>
@@ -1226,8 +1228,9 @@ function DashboardScreen({
       <section
         className="rounded-2xl px-5 pt-6 pb-5 mb-5 relative overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #0ea5e9, #2563eb)",
+          background: "linear-gradient(135deg, #232329, #1A1A1E, #2A2A32)",
           color: "#fff",
+          border: "1px solid rgba(220,168,66,0.2)",
         }}
       >
         {/* Subtle decorative dot pattern */}
@@ -1254,7 +1257,7 @@ function DashboardScreen({
               <p className="text-3xl font-bold tracking-tight mb-1">
                 ${totalUsd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-xs font-medium opacity-70 mb-5">+2.4% today</p>
+              <p className="text-xs font-medium mb-5" style={{ color: "#DCA842" }}>+2.4% today</p>
 
               {/* Address chips */}
               <div className="flex flex-wrap gap-2">
@@ -1263,7 +1266,7 @@ function DashboardScreen({
                     <button
                       onClick={() => onCopyAddress(wallet.tonAddress)}
                       className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono"
-                      style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+                      style={{ backgroundColor: "rgba(220,168,66,0.12)", color: "#DCA842" }}
                     >
                       <span>TON {shortenAddress(wallet.tonAddress)}</span>
                       {copiedAddress === wallet.tonAddress ? (
@@ -1275,7 +1278,7 @@ function DashboardScreen({
                     <button
                       onClick={() => onCopyAddress(wallet.tronAddress)}
                       className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono"
-                      style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+                      style={{ backgroundColor: "rgba(220,168,66,0.12)", color: "#DCA842" }}
                     >
                       <span>TRX {shortenAddress(wallet.tronAddress)}</span>
                       {copiedAddress === wallet.tronAddress ? (
@@ -1298,9 +1301,8 @@ function DashboardScreen({
           onClick={onOpenSend}
           className="flex-1 flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
           style={{
-            backgroundColor: "rgba(255,255,255,0.05)",
-            color: "var(--tg-theme-button-color, #2481cc)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            backgroundColor: "#DCA842",
+            color: "#141416",
           }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -1312,9 +1314,8 @@ function DashboardScreen({
           onClick={onOpenReceive}
           className="flex-1 flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
           style={{
-            backgroundColor: "rgba(255,255,255,0.05)",
-            color: "var(--tg-theme-button-color, #2481cc)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            backgroundColor: "#DCA842",
+            color: "#141416",
           }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -1332,8 +1333,8 @@ function DashboardScreen({
               key={a.symbol}
               className="flex items-center justify-between px-4 py-3.5"
               style={{
-                backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)",
-                borderBottom: i < assets.length - 1 ? "1px solid var(--tg-theme-bg-color, #fff)" : "none",
+                backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)",
+                borderBottom: i < assets.length - 1 ? "1px solid var(--tg-theme-bg-color, #141416)" : "none",
               }}
             >
               <div className="flex items-center gap-3">
@@ -1351,21 +1352,21 @@ function DashboardScreen({
                   {a.symbol[0]}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+                  <p className="text-sm font-semibold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
                     {a.symbol}
                   </p>
-                  <p className="text-[11px]" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+                  <p className="text-[11px]" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
                     {a.name} &middot; ${a.price.toFixed(2)}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold tabular-nums" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+                <p className="text-sm font-semibold tabular-nums" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
                   {formatBalance(a.balance)}
                 </p>
                 <p
                   className="text-[11px] tabular-nums"
-                  style={{ color: a.change24h >= 0 ? "var(--tg-theme-accent-text-color, #2481cc)" : "var(--tg-theme-destructive-text-color, #e53935)" }}
+                  style={{ color: a.change24h >= 0 ? "var(--tg-theme-accent-text-color, #DCA842)" : "var(--tg-theme-destructive-text-color, #e53935)" }}
                 >
                   {a.change24h >= 0 ? "+" : ""}{a.change24h}%
                 </p>
@@ -1385,9 +1386,9 @@ function DashboardScreen({
               className="text-xs font-semibold uppercase tracking-widest pb-1 transition-all"
               style={{
                 color: activityTab === tab
-                  ? "var(--tg-theme-button-color, #2481cc)"
-                  : "var(--tg-theme-hint-color, #999)",
-                borderBottom: activityTab === tab ? "2px solid var(--tg-theme-button-color, #2481cc)" : "2px solid transparent",
+                  ? "var(--tg-theme-button-color, #DCA842)"
+                  : "var(--tg-theme-hint-color, #A0A0AA)",
+                borderBottom: activityTab === tab ? "2px solid var(--tg-theme-button-color, #DCA842)" : "2px solid transparent",
               }}
             >
               {tab}
@@ -1401,7 +1402,7 @@ function DashboardScreen({
               <div
                 key={tx.id}
                 className="flex items-center justify-between px-4 py-3.5"
-                style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+                style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div
@@ -1411,7 +1412,7 @@ function DashboardScreen({
                         ? "rgba(34,197,94,0.15)"
                         : tx.type === "send"
                           ? "rgba(239,68,68,0.12)"
-                          : "var(--tg-theme-bg-color, #fff)",
+                          : "var(--tg-theme-bg-color, #141416)",
                     }}
                   >
                     <span style={{
@@ -1419,16 +1420,16 @@ function DashboardScreen({
                         ? "#22c55e"
                         : tx.type === "send"
                           ? "#ef4444"
-                          : "var(--tg-theme-hint-color, #999)",
+                          : "var(--tg-theme-hint-color, #A0A0AA)",
                     }}>
                       <ActivityIcon type={tx.type} />
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium capitalize" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+                    <p className="text-sm font-medium capitalize" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
                       {tx.type} {tx.asset}
                     </p>
-                    <p className="text-[11px] flex items-center gap-1" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+                    <p className="text-[11px] flex items-center gap-1" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
                       {tx.date}
                       {tx.status === "pending" && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded-full" style={{ backgroundColor: "rgba(234,179,8,0.15)", color: "#ca8a04" }}>
@@ -1448,7 +1449,7 @@ function DashboardScreen({
                   style={{
                     color: tx.type === "receive"
                       ? "#22c55e"
-                      : "var(--tg-theme-text-color, #000)",
+                      : "var(--tg-theme-text-color, #fff)",
                   }}
                 >
                   {tx.type === "receive" ? "+" : "-"}{tx.amount.toFixed(2)}
@@ -1458,7 +1459,7 @@ function DashboardScreen({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-12">
-            <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+            <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
               No collectibles yet
             </p>
           </div>
@@ -1809,10 +1810,10 @@ export default function Home() {
         <div className="flex flex-col h-full px-4 pt-3 pb-6">
           {/* Header */}
           <div className="text-center pb-3">
-            <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #000)" }}>
+            <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
               Receive {shortLabel}
             </h1>
-            <p className="text-xs mt-0.5" style={{ color: "var(--tg-theme-hint-color, #999)" }}>
+            <p className="text-xs mt-0.5" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
               {networkLabel}
             </p>
           </div>
@@ -1820,13 +1821,13 @@ export default function Home() {
           {/* Cross-chain warning */}
           <div
             className="rounded-xl px-4 py-3 mb-5 flex items-start gap-2 text-xs font-medium"
-            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+            style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
           >
             <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
               style={{ backgroundColor: "var(--tg-theme-destructive-text-color, #e53935)" }}>
               !
             </span>
-            <span style={{ color: "var(--tg-theme-hint-color, #999)", lineHeight: 1.4 }}>
+            <span style={{ color: "var(--tg-theme-hint-color, #A0A0AA)", lineHeight: 1.4 }}>
               {isUsdt
                 ? "Send only USDT on TRON (TRC-20). Other networks will result in permanent loss."
                 : receiveAsset === "TRX"
@@ -1854,11 +1855,11 @@ export default function Home() {
             {/* Full address */}
             <div
               className="w-full rounded-xl px-4 py-3.5 text-center"
-              style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #f4f4f5)" }}
+              style={{ backgroundColor: "var(--tg-theme-secondary-bg-color, #1E1E22)" }}
             >
               <p
                 className="text-xs font-mono leading-relaxed break-all select-all"
-                style={{ color: "var(--tg-theme-text-color, #000)" }}
+                style={{ color: "var(--tg-theme-text-color, #fff)" }}
               >
                 {address}
               </p>
@@ -1870,11 +1871,11 @@ export default function Home() {
               className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all active:scale-[0.97] flex items-center justify-center gap-2"
               style={{
                 backgroundColor: receiveCopied === address
-                  ? "var(--tgme-accent-text-color, #2481cc)"
-                  : "var(--tg-theme-secondary-bg-color, #f4f4f5)",
+                  ? "var(--tgme-accent-text-color, #DCA842)"
+                  : "var(--tg-theme-secondary-bg-color, #1E1E22)",
                 color: receiveCopied === address
                   ? "#fff"
-                  : "var(--tg-theme-button-color, #2481cc)",
+                  : "var(--tg-theme-button-color, #DCA842)",
               }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -1896,12 +1897,12 @@ export default function Home() {
                   style={{
                     backgroundColor:
                       receiveAsset === a
-                        ? "var(--tg-theme-button-color, #2481cc)"
-                        : "var(--tg-theme-secondary-bg-color, #f4f4f5)",
+                        ? "var(--tg-theme-button-color, #DCA842)"
+                        : "var(--tg-theme-secondary-bg-color, #1E1E22)",
                     color:
                       receiveAsset === a
                         ? "var(--tg-theme-button-text-color, #fff)"
-                        : "var(--tg-theme-text-color, #000)",
+                        : "var(--tg-theme-text-color, #fff)",
                   }}
                 >
                   {a}
@@ -1912,7 +1913,7 @@ export default function Home() {
             <button
               onClick={handleCloseReceive}
               className="w-full py-3 rounded-xl font-semibold text-sm"
-              style={{ color: "var(--tg-theme-hint-color, #999)" }}
+              style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
             >
               Close
             </button>
