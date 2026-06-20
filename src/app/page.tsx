@@ -474,7 +474,8 @@ export default function Home() {
       const showModalBack = sendStep !== "NONE" || receiveAsset !== "NONE";
       return (
         <>
-          <div className="flex flex-col h-[100dvh]">
+          <div className="flex flex-col h-dvh w-full overflow-hidden bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('/assets/background_dark_long.png')" }}>
             {showModalBack && <NavHeader lang={lang} onBack={handleGoBack} />}
             {activeTab === "MAIN" ? (
               <DashboardScreen
