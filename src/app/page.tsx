@@ -184,10 +184,9 @@ function ShowSeedScreen({
   };
 
   return (
-    <ScreenFrame>
-      <div className="flex-1 flex flex-col">
-        {/* Heading */}
-        <div className="text-center mb-5">
+    <div className="flex-1 flex flex-col">
+      {/* Heading */}
+      <div className="text-center mb-5">
           <h1
             className="text-lg font-bold mb-1"
             style={{ color: "var(--tg-theme-text-color, #fff)" }}
@@ -271,7 +270,6 @@ function ShowSeedScreen({
           </button>
         </div>
       </div>
-    </ScreenFrame>
   );
 }
 
@@ -279,10 +277,8 @@ function ShowSeedScreen({
 
 function ImportSeedScreen({
   onImport,
-  onBack,
 }: {
   onImport: (mnemonic: string) => void;
-  onBack: () => void;
 }) {
   const [input, setInput] = useState("");
   const trimmed = input.trim().replace(/\s+/g, " ");
@@ -290,8 +286,7 @@ function ImportSeedScreen({
   const showWarning = input.length > 0 && !isValid;
 
   return (
-    <ScreenFrame>
-      <div className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col">
         {/* Heading */}
         <div className="text-center mb-5">
           <h1
@@ -376,20 +371,8 @@ function ImportSeedScreen({
             Import
           </button>
 
-          <button
-            onClick={onBack}
-            className="w-full py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.97]"
-            style={{
-              backgroundColor: "rgba(255,255,255,0.06)",
-              color: "var(--tg-theme-hint-color, #A0A0AA)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            Back
-          </button>
-        </div>
+          </div>
       </div>
-    </ScreenFrame>
   );
 }
 
@@ -404,10 +387,9 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
   const showMismatch = touched && confirm.length > 0 && pin !== confirm;
 
   return (
-    <ScreenFrame>
-      <div className="flex-1 flex flex-col">
-        {/* Heading */}
-        <div className="text-center mb-8">
+    <div className="flex-1 flex flex-col">
+      {/* Heading */}
+      <div className="text-center mb-8">
           <h1
             className="text-lg font-bold mb-1"
             style={{ color: "var(--tg-theme-text-color, #fff)" }}
@@ -498,7 +480,6 @@ function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
           Confirm PIN
         </button>
       </div>
-    </ScreenFrame>
   );
 }
 
@@ -1484,6 +1465,7 @@ export default function Home() {
   const [balanceError, setBalanceError] = useState<string | null>(null);
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null);
   const [enterPinError, setEnterPinError] = useState("");
+  const [onboardingSource, setOnboardingSource] = useState<"CREATE" | "IMPORT">("CREATE");
 
   /* ── Receive modal state ── */
   const [receiveAsset, setReceiveAsset] = useState<"NONE" | "TON" | "TRX" | "USDT">("NONE");
@@ -1610,6 +1592,7 @@ export default function Home() {
   const handleNewWallet = () => {
     const w = generateNikkaWallet();
     setWallet(w);
+    setOnboardingSource("CREATE");
     setScreen("SHOW_SEED");
   };
 
@@ -1620,6 +1603,7 @@ export default function Home() {
   const handleImport = (mnemonic: string) => {
     const w = restoreNikkaWallet(mnemonic);
     setWallet(w);
+    setOnboardingSource("IMPORT");
     setScreen("SET_PIN");
   };
 
@@ -1668,11 +1652,6 @@ export default function Home() {
     } catch { /* clipboard unavailable */ }
   };
 
-  const handleCloseReceive = () => {
-    setReceiveAsset("NONE");
-    setReceiveCopied(null);
-  };
-
   /* ── Send flow handlers ── */
 
   const handleOpenSend = () => {
@@ -1684,13 +1663,6 @@ export default function Home() {
   const handlePickAsset = (asset: "SEND_TON" | "SEND_TRX" | "SEND_USDT") => {
     setActiveModal(asset);
     setSendStep("FORM");
-    setSendError("");
-    setSendTxId("");
-  };
-
-  const handleSendCancel = () => {
-    setActiveModal("NONE");
-    setSendStep("NONE");
     setSendError("");
     setSendTxId("");
   };
@@ -1769,7 +1741,7 @@ export default function Home() {
         <SendModalOverlay>
           <AssetPickerScreen
             onPick={handlePickAsset}
-            onCancel={handleSendCancel}
+            onCancel={handleGoBack}
           />
         </SendModalOverlay>
       );
@@ -1786,7 +1758,7 @@ export default function Home() {
             currentBalance={currentBalance ?? 0}
             isTron={activeModal === "SEND_TRX" || activeModal === "SEND_USDT"}
             onSubmit={handleSendSubmit}
-            onCancel={handleSendCancel}
+            onCancel={handleGoBack}
           />
         </SendModalOverlay>
       );
@@ -1814,7 +1786,7 @@ export default function Home() {
           <ErrorScreen
             error={sendError}
             onRetry={() => setSendStep("FORM")}
-            onCancel={handleSendDone}
+            onCancel={handleGoBack}
           />
         </SendModalOverlay>
       );
@@ -1950,7 +1922,7 @@ export default function Home() {
             </div>
 
             <button
-              onClick={handleCloseReceive}
+              onClick={handleGoBack}
               className="w-full py-3 rounded-xl font-semibold text-sm"
               style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
             >
@@ -2020,6 +1992,57 @@ export default function Home() {
     return false;
   };
 
+  const handleGoBack = () => {
+    switch (screen) {
+      case "SHOW_SEED":
+        setScreen("WELCOME");
+        break;
+      case "IMPORT_SEED":
+        setScreen("WELCOME");
+        break;
+      case "SET_PIN":
+        setScreen(onboardingSource === "CREATE" ? "SHOW_SEED" : "IMPORT_SEED");
+        break;
+      case "ENTER_PIN":
+        setEnterPinError("");
+        setScreen("WELCOME");
+        break;
+      case "DASHBOARD":
+        if (sendStep !== "NONE") {
+          setActiveModal("NONE");
+          setSendStep("NONE");
+          setSendError("");
+          setSendTxId("");
+        } else if (receiveAsset !== "NONE") {
+          setReceiveAsset("NONE");
+          setReceiveCopied(null);
+        }
+        break;
+    }
+  };
+
+  /* ── Top Navigation Header ── */
+
+  function NavHeader({ onBack }: { onBack: () => void }) {
+    return (
+      <div
+        className="sticky top-0 z-30 flex items-center px-1 py-2 shrink-0"
+        style={{ backgroundColor: "var(--tg-theme-bg-color, #141416)" }}
+      >
+        <button
+          onClick={onBack}
+          className="flex items-center gap-1 text-sm font-medium transition-all active:scale-90"
+          style={{ color: "var(--tg-theme-button-color, #DCA842)" }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+            <path fillRule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clipRule="evenodd" />
+          </svg>
+          Back
+        </button>
+      </div>
+    );
+  }
+
   /* ── ENTER_PIN screen (unlock existing wallet) ── */
 
   function EnterPinScreen({
@@ -2043,9 +2066,8 @@ export default function Home() {
     const handleDelete = () => setDig((d) => d.slice(0, -1));
 
     return (
-      <ScreenFrame>
-        <div className="flex-1 flex flex-col items-center justify-center">
-          {/* Logo */}
+      <div className="flex-1 flex flex-col items-center justify-center">
+        {/* Logo */}
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
             style={{ backgroundColor: "var(--tg-theme-button-color, #DCA842)" }}
@@ -2134,23 +2156,25 @@ export default function Home() {
             Start over (delete wallet)
           </button>
         </div>
-      </ScreenFrame>
-    );
-  }
+      );
+    }
 
-  switch (screen) {
-    case "ENTER_PIN":
+    switch (screen) {
+      case "ENTER_PIN":
       return (
-        <EnterPinScreen
-          error={enterPinError}
-          onUnlock={handleEnterPin}
-          onBack={() => {
-            localStorage.removeItem("nikka_encrypted");
-            localStorage.removeItem("nikka_vault");
-            setEnterPinError("");
-            setScreen("WELCOME");
-          }}
-        />
+        <ScreenFrame>
+          <NavHeader onBack={handleGoBack} />
+          <EnterPinScreen
+            error={enterPinError}
+            onUnlock={handleEnterPin}
+            onBack={() => {
+              localStorage.removeItem("nikka_encrypted");
+              localStorage.removeItem("nikka_vault");
+              setEnterPinError("");
+              setScreen("WELCOME");
+            }}
+          />
+        </ScreenFrame>
       );
 
     case "WELCOME":
@@ -2163,27 +2187,37 @@ export default function Home() {
 
     case "SHOW_SEED":
       return (
-        <ShowSeedScreen
-          wallet={wallet!}
-          onConfirm={handleSeedConfirmed}
-        />
+        <ScreenFrame>
+          <NavHeader onBack={handleGoBack} />
+          <ShowSeedScreen
+            wallet={wallet!}
+            onConfirm={handleSeedConfirmed}
+          />
+        </ScreenFrame>
       );
 
     case "IMPORT_SEED":
       return (
-        <ImportSeedScreen
-          onImport={handleImport}
-          onBack={() => setScreen("WELCOME")}
-        />
+        <ScreenFrame>
+          <NavHeader onBack={handleGoBack} />
+          <ImportSeedScreen onImport={handleImport} />
+        </ScreenFrame>
       );
 
     case "SET_PIN":
-      return <SetPinScreen onConfirm={handlePinConfirmed} />;
+      return (
+        <ScreenFrame>
+          <NavHeader onBack={handleGoBack} />
+          <SetPinScreen onConfirm={handlePinConfirmed} />
+        </ScreenFrame>
+      );
 
     case "DASHBOARD":
+      const showModalBack = sendStep !== "NONE" || receiveAsset !== "NONE";
       return (
         <>
           <div className="flex flex-col h-[100dvh]">
+            {showModalBack && <NavHeader onBack={handleGoBack} />}
             {activeTab === "MAIN" ? (
               <DashboardScreen
                 wallet={wallet}
