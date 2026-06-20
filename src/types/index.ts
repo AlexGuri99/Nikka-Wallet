@@ -9,7 +9,6 @@ export type Screen =
 
 export interface BalanceData {
   ton: number | null;
-  trx: number | null;
   usdt: number | null;
 }
 
@@ -24,4 +23,4 @@ export interface CryptoActivity {
 }
 
 /** Approximate reference prices for portfolio valuation */
-export const PRICES = { TON: 2.5, TRX: 0.12, USDT: 1.0 };
+export const PRICES = { TON: 2.5, USDT: 1.0 };

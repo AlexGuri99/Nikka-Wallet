@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 export function EnterPinScreen({
+  lang,
   error,
   onUnlock,
   onBack,
 }: {
+  lang: Lang;
   error: string;
   onUnlock: (pin: string) => void;
   onBack: () => void;
@@ -35,10 +39,10 @@ export function EnterPinScreen({
       </div>
 
       <h1 className="text-lg font-bold mb-1" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-        Enter PIN
+        {tt(lang, 'enterPinTitle')}
       </h1>
       <p className="text-sm mb-8" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-        Unlock your wallet
+        {tt(lang, 'enterPinSubtitle')}
       </p>
 
       {/* 4-dot indicator */}
@@ -109,7 +113,7 @@ export function EnterPinScreen({
         className="mt-8 text-xs font-medium"
         style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
       >
-        Start over (delete wallet)
+        {tt(lang, 'enterPinReset')}
       </button>
     </div>
   );

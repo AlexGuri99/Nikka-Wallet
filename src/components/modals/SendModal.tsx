@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { PRICES } from "@/types";
 import { isValidTronAddress, isValidTonAddress } from "@/utils/cryptoCore";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 /* ── Shared overlay ── */
 
@@ -25,24 +27,25 @@ function SendModalOverlay({ children }: { children: React.ReactNode }) {
 function AssetPickerScreen({
   onPick,
   onCancel,
+  lang,
 }: {
-  onPick: (asset: "SEND_TON" | "SEND_TRX" | "SEND_USDT") => void;
+  onPick: (asset: "SEND_TON" | "SEND_USDT") => void;
   onCancel: () => void;
+  lang: Lang;
 }) {
-  const assets: { id: "SEND_TON" | "SEND_TRX" | "SEND_USDT"; label: string; sub: string }[] = [
-    { id: "SEND_TON", label: "TON", sub: "Native token" },
-    { id: "SEND_TRX", label: "TRX", sub: "Tron native token" },
-    { id: "SEND_USDT", label: "USDT", sub: "TRC-20 stablecoin" },
+  const assets: { id: "SEND_TON" | "SEND_USDT"; label: string; sub: string }[] = [
+    { id: "SEND_TON", label: "TON", sub: tt(lang, "nativeToken") },
+    { id: "SEND_USDT", label: "USDT", sub: tt(lang, "usdtToken") },
   ];
 
   return (
     <div className="flex flex-col h-full px-4 pt-3 pb-6">
       <div className="text-center pb-4">
         <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Send
+          {tt(lang, "sendTitle")}
         </h1>
         <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-          Select an asset
+          {tt(lang, "sendSubtitle")}
         </p>
       </div>
       <div className="flex-1 flex flex-col gap-2">
@@ -83,7 +86,7 @@ function AssetPickerScreen({
         className="w-full py-3.5 rounded-xl font-semibold text-sm"
         style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
       >
-        Cancel
+        {tt(lang, "cancel")}
       </button>
     </div>
   );
@@ -95,12 +98,14 @@ function SendFormScreen({
   isTron,
   onSubmit,
   onCancel,
+  lang,
 }: {
   assetLabel: string;
   currentBalance: number;
   isTron: boolean;
   onSubmit: (recipient: string, amount: number, pin: string) => Promise<void>;
   onCancel: () => void;
+  lang: Lang;
 }) {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
@@ -108,11 +113,11 @@ function SendFormScreen({
   const [submitting, setSubmitting] = useState(false);
 
   const parsedAmount = parseFloat(amount) || 0;
-  const feeEstimate = assetLabel === "TON" ? 0.01 : assetLabel === "TRX" ? 5 : 0;
+  const feeEstimate = assetLabel === "TON" ? 0.01 : 0;
   const maxAmount = Math.max(0, currentBalance - feeEstimate);
   const amountOk = parsedAmount > 0 && parsedAmount <= maxAmount;
 
-  const fiatValue = parsedAmount * (assetLabel === "TON" ? PRICES.TON : assetLabel === "TRX" ? PRICES.TRX : PRICES.USDT);
+  const fiatValue = parsedAmount * (assetLabel === "TON" ? PRICES.TON : PRICES.USDT);
 
   const addrValid = recipient.length === 0
     ? null
@@ -140,14 +145,14 @@ function SendFormScreen({
     <div className="flex flex-col h-full px-4 pt-3 pb-6">
       <div className="text-center pb-4">
         <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Send {assetLabel}
+          {tt(lang, "sendFormTitle", { asset: assetLabel })}
         </h1>
       </div>
 
       <div className="flex-1 flex flex-col gap-4">
         <div>
           <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Recipient Address
+            {tt(lang, "recipientLabel")}
           </label>
           <div
             className="rounded-xl px-4 py-3 flex items-center gap-2"
@@ -156,7 +161,7 @@ function SendFormScreen({
             <input
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              placeholder={isTron ? "TXYZ..." : "EQD..."}
+              placeholder={isTron ? tt(lang, "placeholderTron") : tt(lang, "placeholderTon")}
               className="flex-1 bg-transparent text-sm font-mono outline-none min-w-0"
               style={{ color: "var(--tg-theme-text-color, #fff)" }}
               spellCheck={false}
@@ -179,14 +184,14 @@ function SendFormScreen({
           </div>
           {addrValid === false && (
             <p className="text-xs mt-1" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
-              Invalid {isTron ? "TRON" : "TON"} address
+              {isTron ? tt(lang, "invalidTronAddr") : tt(lang, "invalidTonAddr")}
             </p>
           )}
         </div>
 
         <div>
           <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Amount
+            {tt(lang, "amountLabel")}
           </label>
           <div
             className="rounded-xl px-4 py-3"
@@ -212,7 +217,7 @@ function SendFormScreen({
                   backgroundColor: "var(--tg-theme-bg-color, #141416)",
                 }}
               >
-                MAX
+                {tt(lang, "max")}
               </button>
               <span
                 className="text-xs font-semibold px-2.5 py-1 rounded-lg"
@@ -232,11 +237,11 @@ function SendFormScreen({
           </div>
           <div className="flex justify-between mt-1">
             <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-              Balance: {currentBalance.toFixed(2)} {assetLabel}
+              {`${tt(lang, "balancePrefix")}: ${currentBalance.toFixed(2)} ${assetLabel}`}
             </p>
             {parsedAmount > 0 && !amountOk && (
               <p className="text-xs" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
-                {parsedAmount > currentBalance ? "Exceeds balance" : "Min 0.01"}
+                {parsedAmount > currentBalance ? tt(lang, "exceedsBalance") : tt(lang, "minAmount")}
               </p>
             )}
           </div>
@@ -245,7 +250,7 @@ function SendFormScreen({
         {/* PIN */}
         <div>
           <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Enter 4-Digit PIN
+            {tt(lang, "pinLabelSend")}
           </label>
           <div
             className="rounded-xl px-4 py-3"
@@ -274,7 +279,7 @@ function SendFormScreen({
             border: "1px solid var(--tg-theme-secondary-bg-color, #1E1E22)",
           }}
         >
-          Clear
+          {tt(lang, "clear")}
         </button>
         <button
           disabled={!canSubmit}
@@ -285,14 +290,14 @@ function SendFormScreen({
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
-          {submitting ? "Preparing..." : `Send ${assetLabel}`}
+          {submitting ? tt(lang, "preparing") : tt(lang, "sendButton", { asset: assetLabel })}
         </button>
       </div>
     </div>
   );
 }
 
-function SendingScreen() {
+function SendingScreen({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
       <div
@@ -300,16 +305,16 @@ function SendingScreen() {
         style={{ borderColor: "var(--tg-theme-button-color, #DCA842)", borderTopColor: "transparent" }}
       />
       <p className="text-sm font-medium" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-        Signing & broadcasting...
+        {tt(lang, "sendingTitle")}
       </p>
       <p className="text-xs" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-        Please wait while the transaction is processed
+        {tt(lang, "sendingDesc")}
       </p>
     </div>
   );
 }
 
-function SuccessScreen({ txid, onDone }: { txid: string; onDone: () => void }) {
+function SuccessScreen({ txid, onDone, lang }: { txid: string; onDone: () => void; lang: Lang }) {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
       <div
@@ -322,7 +327,7 @@ function SuccessScreen({ txid, onDone }: { txid: string; onDone: () => void }) {
       </div>
       <div className="text-center">
         <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Sent!
+          {tt(lang, "successTitle")}
         </p>
         <p className="text-xs mt-1 font-mono break-all" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
           {txid}
@@ -336,7 +341,7 @@ function SuccessScreen({ txid, onDone }: { txid: string; onDone: () => void }) {
           color: "var(--tg-theme-button-text-color, #fff)",
         }}
       >
-        Done
+        {tt(lang, "done")}
       </button>
     </div>
   );
@@ -346,10 +351,12 @@ function ErrorScreen({
   error,
   onRetry,
   onCancel,
+  lang,
 }: {
   error: string;
   onRetry: () => void;
   onCancel: () => void;
+  lang: Lang;
 }) {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 px-4">
@@ -363,7 +370,7 @@ function ErrorScreen({
       </div>
       <div className="text-center">
         <p className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Failed
+          {tt(lang, "failedTitle")}
         </p>
         <p className="text-xs mt-1" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
           {error}
@@ -378,14 +385,14 @@ function ErrorScreen({
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
-          Try Again
+          {tt(lang, "tryAgain")}
         </button>
         <button
           onClick={onCancel}
           className="w-full py-3 rounded-xl font-semibold text-sm"
           style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
         >
-          Cancel
+          {tt(lang, "cancel")}
         </button>
       </div>
     </div>
@@ -396,15 +403,16 @@ function ErrorScreen({
 
 export interface SendModalProps {
   sendStep: "NONE" | "PICK" | "FORM" | "SENDING" | "SUCCESS" | "ERROR";
-  activeModal: "NONE" | "SEND_TON" | "SEND_TRX" | "SEND_USDT";
+  activeModal: "NONE" | "SEND_TON" | "SEND_USDT";
   sendError: string;
   sendTxId: string;
-  currentBalances: { ton: number | null; trx: number | null; usdt: number | null };
-  onPickAsset: (asset: "SEND_TON" | "SEND_TRX" | "SEND_USDT") => void;
+  currentBalances: { ton: number | null; usdt: number | null };
+  onPickAsset: (asset: "SEND_TON" | "SEND_USDT") => void;
   onSubmit: (recipient: string, amount: number, pin: string) => Promise<void>;
   onDone: () => void;
   onCancel: () => void;
   onRetry: () => void;
+  lang: Lang;
 }
 
 export function SendModal({
@@ -418,37 +426,35 @@ export function SendModal({
   onDone,
   onCancel,
   onRetry,
+  lang,
 }: SendModalProps) {
   if (sendStep === "NONE") return null;
 
-  const assetLabel =
-    activeModal === "SEND_TON" ? "TON"
-    : activeModal === "SEND_TRX" ? "TRX"
-    : "USDT";
+  const assetLabel = activeModal === "SEND_TON" ? "TON" : "USDT";
 
   const currentBalance =
     activeModal === "SEND_TON" ? currentBalances.ton
-    : activeModal === "SEND_TRX" ? currentBalances.trx
     : currentBalances.usdt;
 
   return (
     <SendModalOverlay>
       {sendStep === "PICK" && (
-        <AssetPickerScreen onPick={onPickAsset} onCancel={onCancel} />
+        <AssetPickerScreen onPick={onPickAsset} onCancel={onCancel} lang={lang} />
       )}
       {sendStep === "FORM" && (
         <SendFormScreen
           assetLabel={assetLabel}
           currentBalance={currentBalance ?? 0}
-          isTron={activeModal === "SEND_TRX" || activeModal === "SEND_USDT"}
+          isTron={activeModal === "SEND_USDT"}
           onSubmit={onSubmit}
           onCancel={onCancel}
+          lang={lang}
         />
       )}
-      {sendStep === "SENDING" && <SendingScreen />}
-      {sendStep === "SUCCESS" && <SuccessScreen txid={sendTxId} onDone={onDone} />}
+      {sendStep === "SENDING" && <SendingScreen lang={lang} />}
+      {sendStep === "SUCCESS" && <SuccessScreen txid={sendTxId} onDone={onDone} lang={lang} />}
       {sendStep === "ERROR" && (
-        <ErrorScreen error={sendError} onRetry={onRetry} onCancel={onCancel} />
+        <ErrorScreen error={sendError} onRetry={onRetry} onCancel={onCancel} lang={lang} />
       )}
     </SendModalOverlay>
   );

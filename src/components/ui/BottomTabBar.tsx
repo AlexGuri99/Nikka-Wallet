@@ -1,7 +1,12 @@
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
+
 export function BottomTabBar({
+  lang,
   activeTab,
   onTabChange,
 }: {
+  lang: Lang;
   activeTab: "MAIN" | "SETTINGS";
   onTabChange: (tab: "MAIN" | "SETTINGS") => void;
 }) {
@@ -16,7 +21,7 @@ export function BottomTabBar({
       {[
         {
           key: "MAIN" as const,
-          label: "Main",
+          label: tt(lang, "tabMain"),
           icon: (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
               <path d="M11.584 2.376a.75.75 0 0 1 .832 0l9 6a.75.75 0 1 1-.832 1.248L12 4.013 3.416 9.624a.75.75 0 0 1-.832-1.248l9-6Z" />
@@ -26,7 +31,7 @@ export function BottomTabBar({
         },
         {
           key: "SETTINGS" as const,
-          label: "Settings",
+          label: tt(lang, "tabSettings"),
           icon: (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
               <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />

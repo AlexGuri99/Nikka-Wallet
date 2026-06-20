@@ -1,10 +1,14 @@
 "use client";
 import { ScreenFrame } from "@/components/ui/ScreenFrame";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 export function WelcomeScreen({
+  lang,
   onNewWallet,
   onImport,
 }: {
+  lang: Lang;
   onNewWallet: () => void;
   onImport: () => void;
 }) {
@@ -24,10 +28,10 @@ export function WelcomeScreen({
 
         <div>
           <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-            Nikka Wallet
+            {tt(lang, 'welcomeTitle')}
           </h1>
           <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Your self-custodial crypto wallet
+            {tt(lang, 'welcomeSubtitle')}
           </p>
         </div>
 
@@ -41,7 +45,7 @@ export function WelcomeScreen({
               color: "var(--tg-theme-button-text-color, #fff)",
             }}
           >
-            Create New Wallet
+            {tt(lang, 'welcomeCreate')}
           </button>
 
           <button
@@ -53,7 +57,7 @@ export function WelcomeScreen({
               border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
-            Import Mnemonic
+            {tt(lang, 'welcomeImport')}
           </button>
         </div>
       </div>

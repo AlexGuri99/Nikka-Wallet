@@ -1,10 +1,14 @@
 "use client";
 import { useState } from "react";
 import { validateMnemonic } from "bip39";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 export function ImportSeedScreen({
+  lang,
   onImport,
 }: {
+  lang: Lang;
   onImport: (mnemonic: string) => void;
 }) {
   const [input, setInput] = useState("");
@@ -17,10 +21,10 @@ export function ImportSeedScreen({
       {/* Heading */}
       <div className="text-center mb-5">
         <h1 className="text-lg font-bold mb-1" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Import Wallet
+          {tt(lang, 'importTitle')}
         </h1>
         <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-          Paste or type your 24-word recovery phrase
+          {tt(lang, 'importSubtitle')}
         </p>
       </div>
 
@@ -28,7 +32,7 @@ export function ImportSeedScreen({
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="arena aim clap fog noodle ski pole local curious goose fat attack ..."
+        placeholder={tt(lang, 'importPlaceholder')}
         rows={4}
         className="w-full resize-none rounded-2xl p-4 text-sm font-mono outline-none transition-shadow"
         style={{
@@ -52,13 +56,13 @@ export function ImportSeedScreen({
               <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clipRule="evenodd" />
             </svg>
             <span className="text-xs font-medium" style={{ color: "var(--tg-theme-accent-text-color, #DCA842)" }}>
-              Valid phrase
+              {tt(lang, 'importValid')}
             </span>
           </>
         )}
         {showWarning && (
           <span className="text-xs" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
-            Invalid recovery phrase — check each word is spelled correctly
+            {tt(lang, 'importInvalid')}
           </span>
         )}
       </div>
@@ -74,7 +78,7 @@ export function ImportSeedScreen({
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
-          Import
+          {tt(lang, 'importButton')}
         </button>
       </div>
     </div>

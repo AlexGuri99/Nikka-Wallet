@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
-export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }) {
+export function SetPinScreen({ lang, onConfirm }: { lang: Lang; onConfirm: (pin: string) => void }) {
   const [pin, setPin] = useState("");
   const [confirm, setConfirm] = useState("");
   const [touched, setTouched] = useState(false);
@@ -14,10 +16,10 @@ export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }
       {/* Heading */}
       <div className="text-center mb-8">
         <h1 className="text-lg font-bold mb-1" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Set Your PIN
+          {tt(lang, 'pinTitle')}
         </h1>
         <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-          Choose a 4-digit code to secure your wallet
+          {tt(lang, 'pinSubtitle')}
         </p>
       </div>
 
@@ -25,7 +27,7 @@ export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }
       <div className="flex flex-col gap-4 max-w-[220px] mx-auto w-full">
         <div>
           <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Enter PIN
+            {tt(lang, 'pinLabel')}
           </label>
           <div className="rounded-2xl" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
             <input
@@ -46,7 +48,7 @@ export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }
 
         <div>
           <label className="text-xs font-medium mb-1.5 block" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            Confirm PIN
+            {tt(lang, 'pinConfirmLabel')}
           </label>
           <div className="rounded-2xl" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
             <input
@@ -69,7 +71,7 @@ export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }
         <div className="h-5 text-center">
           {showMismatch && (
             <span className="text-xs" style={{ color: "var(--tg-theme-destructive-text-color, #e53935)" }}>
-              PINs do not match
+              {tt(lang, 'pinMismatch')}
             </span>
           )}
         </div>
@@ -85,7 +87,7 @@ export function SetPinScreen({ onConfirm }: { onConfirm: (pin: string) => void }
           color: "var(--tg-theme-button-text-color, #fff)",
         }}
       >
-        Confirm PIN
+        {tt(lang, 'pinButton')}
       </button>
     </div>
   );

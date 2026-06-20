@@ -1,14 +1,17 @@
 "use client";
 import { QRCodeSVG } from "qrcode.react";
 import type { NikkaWalletState } from "@/utils/cryptoCore";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 export interface ReceiveModalProps {
-  receiveAsset: "NONE" | "TON" | "TRX" | "USDT";
+  receiveAsset: "NONE" | "TON" | "USDT";
   receiveCopied: string | null;
   wallet: NikkaWalletState;
-  onPickAsset: (asset: "TON" | "TRX" | "USDT") => void;
+  onPickAsset: (asset: "TON" | "USDT") => void;
   onCopyAddress: (address: string) => void;
   onCancel: () => void;
+  lang: Lang;
 }
 
 export function ReceiveModal({
@@ -18,25 +21,14 @@ export function ReceiveModal({
   onPickAsset,
   onCopyAddress,
   onCancel,
+  lang,
 }: ReceiveModalProps) {
   if (receiveAsset === "NONE") return null;
 
-  const address =
-    receiveAsset === "TON" ? wallet.tonAddress
-    : receiveAsset === "TRX" ? wallet.tronAddress
-    : wallet.tronAddress;
-
-  const networkLabel =
-    receiveAsset === "TON" ? "TON Network"
-    : receiveAsset === "TRX" ? "TRON Network"
-    : "TRON Network (TRC-20)";
-
-  const shortLabel =
-    receiveAsset === "TON" ? "TON"
-    : receiveAsset === "TRX" ? "TRX"
-    : "USDT";
-
   const isUsdt = receiveAsset === "USDT";
+
+  const address = receiveAsset === "TON" ? wallet.tonAddress : wallet.tronAddress;
+  const shortLabel = receiveAsset === "TON" ? "TON" : "USDT";
 
   return (
     <div
@@ -51,10 +43,10 @@ export function ReceiveModal({
         {/* Header */}
         <div className="text-center pb-3">
           <h1 className="text-lg font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-            Receive {shortLabel}
+            {tt(lang, "receiveTitle", { asset: shortLabel })}
           </h1>
           <p className="text-xs mt-0.5" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-            {networkLabel}
+            {tt(lang, receiveAsset === "TON" ? "tonNetwork" : "trc20Network")}
           </p>
         </div>
 
@@ -71,10 +63,8 @@ export function ReceiveModal({
           </span>
           <span style={{ color: "var(--tg-theme-hint-color, #A0A0AA)", lineHeight: 1.4 }}>
             {isUsdt
-              ? "Send only USDT on TRON (TRC-20). Other networks will result in permanent loss."
-              : receiveAsset === "TRX"
-                ? "Send only TRX on TRON network. Other networks will result in permanent loss."
-                : "Send only TON on TON network. Other networks will result in permanent loss."}
+              ? tt(lang, "warningUsdt")
+              : tt(lang, "warningTon")}
           </span>
         </div>
 
@@ -108,14 +98,14 @@ export function ReceiveModal({
               <path d="M7 3.5A1.5 1.5 0 0 1 8.5 2h3.879a1.5 1.5 0 0 1 1.06.44l3.122 3.12A1.5 1.5 0 0 1 17 6.622V12.5a1.5 1.5 0 0 1-1.5 1.5h-1v-3.379a3 3 0 0 0-.879-2.121L10.5 5.379A3 3 0 0 0 8.379 4.5H7v-1Z" />
               <path d="M3 4.5v11A2.5 2.5 0 0 0 5.5 18h5A2.5 2.5 0 0 0 13 15.5v-7.05a2.5 2.5 0 0 0-.732-1.768L9.318 4.232A2.5 2.5 0 0 0 7.55 3.5H5.5A2.5 2.5 0 0 0 3 4.5Z" />
             </svg>
-            {receiveCopied === address ? "Copied!" : "Copy Address"}
+            {receiveCopied === address ? tt(lang, "copied") : tt(lang, "copyAddress")}
           </button>
         </div>
 
         {/* Switch asset row + close */}
         <div className="flex flex-col gap-3 mt-auto pt-4">
           <div className="flex gap-2">
-            {(["TON", "TRX", "USDT"] as const).map((a) => (
+            {(["TON", "USDT"] as const).map((a) => (
               <button
                 key={a}
                 onClick={() => onPickAsset(a)}
@@ -141,7 +131,7 @@ export function ReceiveModal({
             className="w-full py-3 rounded-xl font-semibold text-sm"
             style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}
           >
-            Close
+            {tt(lang, "close")}
           </button>
         </div>
       </div>

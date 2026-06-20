@@ -61,3 +61,19 @@ textarea {
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
+
+/* ── Light theme overrides ── */
+html.light {
+  --tg-theme-bg-color: #F9F9FB;
+  --tg-theme-text-color: #141416;
+  --tg-theme-hint-color: #8E8E96;
+  --tg-theme-link-color: #DCA842;
+  --tg-theme-button-color: #DCA842;
+  --tg-theme-button-text-color: #FFFFFF;
+  --tg-theme-secondary-bg-color: #F0F2F5;
+  --tg-theme-header-bg-color: #F0F2F5;
+  --tg-theme-accent-text-color: #DCA842;
+  --tg-theme-section-bg-color: #FFFFFF;
+  --tg-theme-destructive-text-color: #e53935;
+  --tg-theme-subtitle-text-color: #8E8E96;
+}

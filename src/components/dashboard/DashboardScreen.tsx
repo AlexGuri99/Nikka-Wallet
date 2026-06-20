@@ -4,14 +4,14 @@ import type { NikkaWalletState } from "@/utils/cryptoCore";
 import type { BalanceData, CryptoActivity } from "@/types";
 import { PRICES } from "@/types";
 import { ActivityIcon } from "@/components/ui/ActivityIcon";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 const ACTIVITIES: CryptoActivity[] = [
   { id: 1, type: "receive", asset: "TON", amount: 125.5, usdValue: 313.75, date: "Jun 17", status: "completed" },
   { id: 2, type: "send", asset: "USDT", amount: 50, usdValue: 50, date: "Jun 16", status: "completed" },
-  { id: 3, type: "receive", asset: "TRX", amount: 850, usdValue: 102, date: "Jun 15", status: "completed" },
   { id: 4, type: "swap", asset: "TON", amount: 10, usdValue: 25, date: "Jun 14", status: "completed" },
   { id: 5, type: "receive", asset: "USDT", amount: 200, usdValue: 200, date: "Jun 12", status: "completed" },
-  { id: 6, type: "send", asset: "TRX", amount: 50, usdValue: 6, date: "Jun 10", status: "failed" },
 ];
 
 function shortenAddress(addr: string): string {
@@ -33,6 +33,7 @@ export interface DashboardScreenProps {
   balanceLoading: boolean;
   balanceError: string | null;
   copiedAddress: string | null;
+  lang: Lang;
   onCopyAddress: (address: string) => void;
   onOpenSend: () => void;
   onOpenReceive: () => void;
@@ -45,6 +46,7 @@ export function DashboardScreen({
   balanceLoading,
   balanceError,
   copiedAddress,
+  lang,
   onCopyAddress,
   onOpenSend,
   onOpenReceive,
@@ -56,14 +58,12 @@ export function DashboardScreen({
     v !== null ? v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—";
 
   const tonVal = balances.ton ?? 0;
-  const trxVal = balances.trx ?? 0;
   const usdtVal = balances.usdt ?? 0;
-  const totalUsd = tonVal * PRICES.TON + trxVal * PRICES.TRX + usdtVal * PRICES.USDT;
+  const totalUsd = tonVal * PRICES.TON + usdtVal * PRICES.USDT;
 
   const assets: { symbol: string; name: string; balance: number; price: number; change24h: number }[] = [
     { symbol: "TON", name: "Toncoin", balance: tonVal, price: PRICES.TON, change24h: 3.2 },
-    { symbol: "TRX", name: "Tron", balance: trxVal, price: PRICES.TRX, change24h: -1.1 },
-    { symbol: "USDT", name: "Tether USD", balance: usdtVal, price: PRICES.USDT, change24h: 0.01 },
+    { symbol: "USDT", name: "Tether USD (TRC-20)", balance: usdtVal, price: PRICES.USDT, change24h: 0.01 },
   ];
 
   return (
@@ -72,7 +72,7 @@ export function DashboardScreen({
       <header className="flex items-center justify-between pb-4">
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-            Nikka Wallet
+            {tt(lang, 'walletName')}
           </span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5"
             style={{ color: "var(--tg-theme-accent-text-color, #DCA842)" }}>
@@ -90,7 +90,7 @@ export function DashboardScreen({
           >
             <span>{shortenAddress(wallet.tonAddress)}</span>
             {copiedAddress === wallet.tonAddress ? (
-              <span className="text-[10px] font-medium" style={{ color: "var(--tg-theme-accent-text-color)" }}>Copied</span>
+              <span className="text-[10px] font-medium" style={{ color: "var(--tg-theme-accent-text-color)" }}>{tt(lang, 'copiedShort')}</span>
             ) : (
               <CopyIcon />
             )}
@@ -123,39 +123,25 @@ export function DashboardScreen({
             </div>
           ) : (
             <>
-              <p className="text-xs font-medium uppercase tracking-widest opacity-60 mb-1">Portfolio</p>
+              <p className="text-xs font-medium uppercase tracking-widest opacity-60 mb-1">{tt(lang, 'portfolio')}</p>
               <p className="text-3xl font-bold tracking-tight mb-1">
                 ${totalUsd.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
-              <p className="text-xs font-medium mb-5" style={{ color: "#DCA842" }}>+2.4% today</p>
+              <p className="text-xs font-medium mb-5" style={{ color: "#DCA842" }}>{tt(lang, 'todayChange')}</p>
               <div className="flex flex-wrap gap-2">
                 {wallet && (
-                  <>
-                    <button
-                      onClick={() => onCopyAddress(wallet.tonAddress)}
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono"
-                      style={{ backgroundColor: "rgba(220,168,66,0.12)", color: "#DCA842" }}
-                    >
-                      <span>TON {shortenAddress(wallet.tonAddress)}</span>
-                      {copiedAddress === wallet.tonAddress ? (
-                        <span className="text-[10px]">Copied</span>
-                      ) : (
-                        <CopyIcon />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => onCopyAddress(wallet.tronAddress)}
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono"
-                      style={{ backgroundColor: "rgba(220,168,66,0.12)", color: "#DCA842" }}
-                    >
-                      <span>TRX {shortenAddress(wallet.tronAddress)}</span>
-                      {copiedAddress === wallet.tronAddress ? (
-                        <span className="text-[10px]">Copied</span>
-                      ) : (
-                        <CopyIcon />
-                      )}
-                    </button>
-                  </>
+                  <button
+                    onClick={() => onCopyAddress(wallet.tonAddress)}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono"
+                    style={{ backgroundColor: "rgba(220,168,66,0.12)", color: "#DCA842" }}
+                  >
+                    <span>TON {shortenAddress(wallet.tonAddress)}</span>
+                    {copiedAddress === wallet.tonAddress ? (
+                      <span className="text-[10px]">{tt(lang, 'copiedShort')}</span>
+                    ) : (
+                      <CopyIcon />
+                    )}
+                  </button>
                 )}
               </div>
             </>
@@ -173,7 +159,7 @@ export function DashboardScreen({
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
             <path d="M3.105 2.289a.75.75 0 0 0-.826.95l1.414 4.925A1.5 1.5 0 0 0 5.135 9.25h6.115a.75.75 0 0 1 0 1.5H5.135a1.5 1.5 0 0 0-1.442 1.086l-1.414 4.926a.75.75 0 0 0 .826.95 28.9 28.9 0 0 0 15.293-7.154.75.75 0 0 0 0-1.115A28.9 28.9 0 0 0 3.105 2.289Z" />
           </svg>
-          Send
+          {tt(lang, 'send')}
         </button>
         <button
           onClick={onOpenReceive}
@@ -183,7 +169,7 @@ export function DashboardScreen({
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
             <path d="M10 3a.75.75 0 0 1 .75.75v10.638l3.96-4.158a.75.75 0 1 1 1.08 1.04l-5.25 5.5a.75.75 0 0 1-1.08 0l-5.25-5.5a.75.75 0 1 1 1.08-1.04l3.96 4.158V3.75A.75.75 0 0 1 10 3Z" />
           </svg>
-          Receive
+          {tt(lang, 'receive')}
         </button>
       </div>
 
@@ -205,9 +191,7 @@ export function DashboardScreen({
                   style={{
                     background: a.symbol === "TON"
                       ? "linear-gradient(135deg, #0098EA, #0077B6)"
-                      : a.symbol === "TRX"
-                        ? "linear-gradient(135deg, #EF0027, #CC0020)"
-                        : "linear-gradient(135deg, #26A17B, #1A7A5C)",
+                      : "linear-gradient(135deg, #26A17B, #1A7A5C)",
                     color: "#fff",
                   }}
                 >
@@ -251,7 +235,7 @@ export function DashboardScreen({
                 borderBottom: activityTab === tab ? "2px solid var(--tg-theme-button-color, #DCA842)" : "2px solid transparent",
               }}
             >
-              {tab}
+              {tt(lang, tab === 'activity' ? 'activity' : 'collectibles')}
             </button>
           ))}
         </div>
@@ -312,7 +296,7 @@ export function DashboardScreen({
         ) : (
           <div className="flex flex-col items-center justify-center py-12">
             <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-              No collectibles yet
+              {tt(lang, 'noCollectibles')}
             </p>
           </div>
         )}

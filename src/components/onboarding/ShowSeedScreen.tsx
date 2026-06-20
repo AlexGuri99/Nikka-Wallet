@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
 import type { NikkaWalletState } from "@/utils/cryptoCore";
+import { tt } from "@/translations";
+import type { Lang } from "@/translations";
 
 export function ShowSeedScreen({
+  lang,
   wallet,
   onConfirm,
 }: {
+  lang: Lang;
   wallet: NikkaWalletState;
   onConfirm: () => void;
 }) {
@@ -27,10 +31,10 @@ export function ShowSeedScreen({
       {/* Heading */}
       <div className="text-center mb-5">
         <h1 className="text-lg font-bold mb-1" style={{ color: "var(--tg-theme-text-color, #fff)" }}>
-          Your Recovery Phrase
+          {tt(lang, 'seedTitle')}
         </h1>
         <p className="text-sm" style={{ color: "var(--tg-theme-hint-color, #A0A0AA)" }}>
-          Write these 24 words down in order. Never share them with anyone.
+          {tt(lang, 'seedSubtitle')}
         </p>
       </div>
 
@@ -61,11 +65,9 @@ export function ShowSeedScreen({
           borderLeft: "3px solid var(--tg-theme-destructive-text-color, #e53935)",
         }}
       >
-        Nikka Wallet is a non-custodial wallet. We do not store or have access
-        to your recovery phrase. If you lose it, your funds cannot be
-        recovered.{" "}
+        {tt(lang, 'seedNotice')}{' '}
         <strong style={{ color: "rgba(255,255,255,0.85)" }}>
-          Write it down and keep it safe.
+          {tt(lang, 'seedNoticeBold')}
         </strong>
       </div>
 
@@ -80,7 +82,7 @@ export function ShowSeedScreen({
             border: "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          {copied ? "Copied!" : "Copy to Clipboard"}
+          {copied ? tt(lang, 'copied') : tt(lang, 'seedCopy')}
         </button>
 
         <button
@@ -91,7 +93,7 @@ export function ShowSeedScreen({
             color: "var(--tg-theme-button-text-color, #fff)",
           }}
         >
-          I Have Written It Down
+          {tt(lang, 'seedConfirm')}
         </button>
       </div>
     </div>

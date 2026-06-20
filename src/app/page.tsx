@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import {
   type NikkaWalletState,
   generateNikkaWallet,
@@ -8,12 +8,12 @@ import {
   encryptMnemonic,
   decryptMnemonic,
   createAndSendTonTransfer,
-  createAndSignTronTransfer,
   createAndSignUsdtTransfer,
   broadcastTronTransaction,
 } from "@/utils/cryptoCore";
-import { fetchTonBalance, fetchTronBalance, fetchUsdtBalance } from "@/utils/networkCore";
+import { fetchTonBalance, fetchUsdtBalance } from "@/utils/networkCore";
 import type { Screen, BalanceData } from "@/types";
+import type { Lang } from "@/translations";
 
 import { ScreenFrame } from "@/components/ui/ScreenFrame";
 import { NavHeader } from "@/components/ui/NavHeader";
@@ -36,9 +36,10 @@ export default function Home() {
   const [screen, setScreen] = useState<Screen>("WELCOME");
   const [wallet, setWallet] = useState<NikkaWalletState | null>(null);
   const [activeTab, setActiveTab] = useState<"MAIN" | "SETTINGS">("MAIN");
+  const [lang, setLang] = useState<Lang>("EN");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [balances, setBalances] = useState<BalanceData>({
     ton: null,
-    trx: null,
     usdt: null,
   });
   const [balanceLoading, setBalanceLoading] = useState(false);
@@ -48,17 +49,18 @@ export default function Home() {
   const [onboardingSource, setOnboardingSource] = useState<"CREATE" | "IMPORT">("CREATE");
 
   /* ── Receive modal state ── */
-  const [receiveAsset, setReceiveAsset] = useState<"NONE" | "TON" | "TRX" | "USDT">("NONE");
+  const [receiveAsset, setReceiveAsset] = useState<"NONE" | "TON" | "USDT">("NONE");
   const [receiveCopied, setReceiveCopied] = useState<string | null>(null);
 
   /* ── Send modal state ── */
-  const [activeModal, setActiveModal] = useState<"NONE" | "SEND_TON" | "SEND_TRX" | "SEND_USDT">("NONE");
+  const [activeModal, setActiveModal] = useState<"NONE" | "SEND_TON" | "SEND_USDT">("NONE");
   const [sendStep, setSendStep] = useState<"NONE" | "PICK" | "FORM" | "SENDING" | "SUCCESS" | "ERROR">("NONE");
   const [sendError, setSendError] = useState("");
   const [sendTxId, setSendTxId] = useState("");
   const webAppRef = useRef<Awaited<typeof import("@twa-dev/sdk").default> | null>(null);
   const pinRef = useRef<string>("");
   const lastActivityRef = useRef<number>(Date.now());
+  const idleTimeoutMsRef = useRef<number>(300_000);
 
   useEffect(() => {
     import("@twa-dev/sdk").then(({ default: WebApp }) => {
@@ -106,7 +108,7 @@ export default function Home() {
     checkExisting();
   }, []);
 
-  /* ── Idle lock timer: 3 min of inactivity → IDLE_LOCKED ── */
+  /* ── Idle lock timer: configurable timeout → IDLE_LOCKED ── */
   useEffect(() => {
     if (screen !== "DASHBOARD") return;
 
@@ -116,7 +118,7 @@ export default function Home() {
     window.addEventListener("keydown", updateActivity);
 
     const interval = setInterval(() => {
-      if (Date.now() - lastActivityRef.current > 180_000) {
+      if (Date.now() - lastActivityRef.current > idleTimeoutMsRef.current) {
         setScreen("IDLE_LOCKED");
       }
     }, 10_000);
@@ -129,6 +131,16 @@ export default function Home() {
     };
   }, [screen]);
 
+  /* ── Sync theme to document ── */
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "light") {
+      root.classList.add("light");
+    } else {
+      root.classList.remove("light");
+    }
+  }, [theme]);
+
   /* Fetch live balances when the dashboard mounts */
   useEffect(() => {
     if (screen !== "DASHBOARD" || !wallet) return;
@@ -139,13 +151,12 @@ export default function Home() {
       setBalanceLoading(true);
       setBalanceError(null);
       try {
-        const [ton, trx, usdt] = await Promise.all([
+        const [ton, usdt] = await Promise.all([
           fetchTonBalance(wallet.tonAddress),
-          fetchTronBalance(wallet.tronAddress),
           fetchUsdtBalance(wallet.tronAddress),
         ]);
         if (cancelled) return;
-        setBalances({ ton, trx, usdt });
+        setBalances({ ton, usdt });
       } catch {
         if (!cancelled) setBalanceError("Could not fetch balances");
       } finally {
@@ -218,7 +229,7 @@ export default function Home() {
     setReceiveCopied(null);
   };
 
-  const handlePickReceiveAsset = (asset: "TON" | "TRX" | "USDT") => {
+  const handlePickReceiveAsset = (asset: "TON" | "USDT") => {
     setReceiveAsset(asset);
     setReceiveCopied(null);
   };
@@ -240,7 +251,7 @@ export default function Home() {
     setSendTxId("");
   };
 
-  const handlePickAsset = (asset: "SEND_TON" | "SEND_TRX" | "SEND_USDT") => {
+  const handlePickAsset = (asset: "SEND_TON" | "SEND_USDT") => {
     setActiveModal(asset);
     setSendStep("FORM");
     setSendError("");
@@ -273,12 +284,6 @@ export default function Home() {
       let txid = "";
       if (activeModal === "SEND_TON") {
         txid = await createAndSendTonTransfer(mnemonic, recipient, amount);
-      } else if (activeModal === "SEND_TRX") {
-        const amountSun = Math.round(amount * 1_000_000);
-        const signed = await createAndSignTronTransfer(
-          wallet.tronPrivateKey, wallet.tronAddress, recipient, amountSun,
-        );
-        txid = await broadcastTronTransaction(signed);
       } else if (activeModal === "SEND_USDT") {
         const amountUnits = Math.round(amount * 1_000_000);
         const signed = await createAndSignUsdtTransfer(
@@ -304,7 +309,6 @@ export default function Home() {
     if (wallet) {
       Promise.all([
         fetchTonBalance(wallet.tonAddress).then((v) => setBalances((p) => ({ ...p, ton: v }))),
-        fetchTronBalance(wallet.tronAddress).then((v) => setBalances((p) => ({ ...p, trx: v }))),
         fetchUsdtBalance(wallet.tronAddress).then((v) => setBalances((p) => ({ ...p, usdt: v }))),
       ]).catch(() => {});
     }
@@ -312,6 +316,18 @@ export default function Home() {
     setSendStep("NONE");
     setSendError("");
     setSendTxId("");
+  };
+
+  /* ── Settings callbacks ── */
+
+  const handleAutoLockChange = (minutes: number) => {
+    idleTimeoutMsRef.current = minutes * 60_000;
+  };
+
+  const handleChangePin = () => {
+    // Trigger re-encryption flow: go back to SET_PIN to create a new PIN
+    // The user will enter the new PIN which re-encrypts the mnemonic
+    setScreen("SET_PIN");
   };
 
   /* ── Idle lock handlers ── */
@@ -402,8 +418,9 @@ export default function Home() {
     case "ENTER_PIN":
       return (
         <ScreenFrame>
-          <NavHeader onBack={handleGoBack} />
+          <NavHeader lang={lang} onBack={handleGoBack} />
           <EnterPinScreen
+            lang={lang}
             error={enterPinError}
             onUnlock={handleEnterPin}
             onBack={() => {
@@ -419,16 +436,18 @@ export default function Home() {
     case "WELCOME":
       return (
         <WelcomeScreen
-          onNewWallet={handleNewWallet}
-          onImport={handleImportClick}
-        />
+            lang={lang}
+            onNewWallet={handleNewWallet}
+            onImport={handleImportClick}
+          />
       );
 
     case "SHOW_SEED":
       return (
         <ScreenFrame>
-          <NavHeader onBack={handleGoBack} />
+          <NavHeader lang={lang} onBack={handleGoBack} />
           <ShowSeedScreen
+            lang={lang}
             wallet={wallet!}
             onConfirm={handleSeedConfirmed}
           />
@@ -438,16 +457,16 @@ export default function Home() {
     case "IMPORT_SEED":
       return (
         <ScreenFrame>
-          <NavHeader onBack={handleGoBack} />
-          <ImportSeedScreen onImport={handleImport} />
+          <NavHeader lang={lang} onBack={handleGoBack} />
+          <ImportSeedScreen lang={lang} onImport={handleImport} />
         </ScreenFrame>
       );
 
     case "SET_PIN":
       return (
         <ScreenFrame>
-          <NavHeader onBack={handleGoBack} />
-          <SetPinScreen onConfirm={handlePinConfirmed} />
+          <NavHeader lang={lang} onBack={handleGoBack} />
+          <SetPinScreen lang={lang} onConfirm={handlePinConfirmed} />
         </ScreenFrame>
       );
 
@@ -456,9 +475,10 @@ export default function Home() {
       return (
         <>
           <div className="flex flex-col h-[100dvh]">
-            {showModalBack && <NavHeader onBack={handleGoBack} />}
+            {showModalBack && <NavHeader lang={lang} onBack={handleGoBack} />}
             {activeTab === "MAIN" ? (
               <DashboardScreen
+                lang={lang}
                 wallet={wallet}
                 balances={balances}
                 balanceLoading={balanceLoading}
@@ -470,12 +490,22 @@ export default function Home() {
                 onLock={handleLock}
               />
             ) : (
-              <SettingsScreen wallet={wallet} />
+              <SettingsScreen
+                lang={lang}
+                setLang={setLang}
+                theme={theme}
+                setTheme={setTheme}
+                wallet={wallet}
+                onAutoLockChange={handleAutoLockChange}
+                onChangePin={handleChangePin}
+                currentAutoLockMinutes={idleTimeoutMsRef.current / 60_000}
+              />
             )}
-            <BottomTabBar activeTab={activeTab} onTabChange={setActiveTab} />
+            <BottomTabBar lang={lang} activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
           <SendModal
+            lang={lang}
             sendStep={sendStep}
             activeModal={activeModal}
             sendError={sendError}
@@ -490,6 +520,7 @@ export default function Home() {
 
           {wallet && (
             <ReceiveModal
+              lang={lang}
               receiveAsset={receiveAsset}
               receiveCopied={receiveCopied}
               wallet={wallet}

@@ -7,15 +7,6 @@ export async function fetchTonBalance(address: string): Promise<number> {
   return parseInt(data.result, 10) / 1e9;
 }
 
-export async function fetchTronBalance(address: string): Promise<number> {
-  const res = await fetch(
-    `https://api.trongrid.io/v1/accounts/${encodeURIComponent(address)}`,
-  );
-  const data = await res.json();
-  if (!data.success || !data.data?.length) throw new Error("TRX fetch failed");
-  return data.data[0].balance / 1_000_000;
-}
-
 export async function fetchUsdtBalance(address: string): Promise<number> {
   const res = await fetch(
     `https://api.trongrid.io/v1/accounts/${encodeURIComponent(address)}/trc20?contract_address=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`,
